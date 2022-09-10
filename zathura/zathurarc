@@ -1,0 +1,14 @@
+set page-padding 1
+map t recolor
+map R rotate
+map r reload
+map y scroll half-up
+map u scroll half-down
+map n scroll left
+map e scroll down
+map i scroll up
+map o scroll right
+map N scroll full-left
+map E scroll full-down
+map I scroll full-up
+map O scroll full-right
