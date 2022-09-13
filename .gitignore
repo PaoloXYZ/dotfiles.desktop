@@ -20,3 +20,7 @@
 !/x
 /x/*
 !/x/.xprofile
+
+!/alacritty
+/alacritty/*
+!/alacritty/alacritty.yml
