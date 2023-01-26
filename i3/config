@@ -35,12 +35,23 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+# set default window border thickness
+default_border pixel 1
+default_floating_border pixel 10
+# firefox width is set to 0 so you can manually change tab even when clicking on the top of the screen
+for_window [class="firefox"] border pixel 0
+# therminal should be no title whether it is floating or default mode
+for_window [class="Alacritty"] border pixel 1
+
+# class                 border  backgr. text    indicator child_border
+# client.focused          #4c00b0 #4c00b0 #ffffff #4c00b0 
+
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-# bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # better shortcut keys for volume settings
 bindsym $mod+F1 exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
@@ -62,6 +73,11 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
+# numPad Return key should also open the terminal
+bindcode $mod+104 exec i3-sensible-terminal
+
+# toggle status bar
+bindsym $mod+b bar mode toggle
 
 # kill focused window
 bindsym $mod+q kill
@@ -206,8 +222,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Workspaces default positon
-workspace $ws1 output HDMI-2
-workspace $ws2 output HDMI-1
+workspace $ws1 output HDMI-1
+workspace $ws2 output HDMI-2
 
 # Autostart applications on startup
 assign [class="firefox"] $ws1
@@ -215,8 +231,7 @@ exec --no-startup-id firefox
 exec --no-startup-id i3-msg 'workspace 2; exec i3-sensible-terminal'
 
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
         status_command i3status -c ~/.config/i3status/config
 }
@@ -227,8 +242,11 @@ exec --no-startup-id xrandr --output HDMI-1 --mode 1920x1080 --rate 144
 # Set Tab key behaviour to be the exact same as the Backspace key (by default does not allow holding down)
 exec_always xmodmap -e "keycode 66 = BackSpace BackSpace BackSpace BackSpace"
 
-#hide cursor if it's not being used
+# hide cursor if it's not being used
 exec --no-startup-id unclutter &
+
+# turn numlock on on startup
+exec --no-startup-id numlockx on
 
 # https://gist.github.com/dianjuar/ee774561a8bc02b077989bc17424a19f
 # Screenshots
@@ -245,4 +263,3 @@ bindsym Ctrl+Shift+Print exec --no-startup-id maim --select | xclip -selection c
 bindsym $mod+y exec --no-startup-id ~/git/dmenu-scripts/usbmount
 bindsym Shift+$mod+y exec --no-startup-id ~/git/dmenu-scripts/usbunmount
 bindsym Ctrl+$mod+y exec --no-startup-id ~/git/dmenu-scripts/usbpoweroff
-
